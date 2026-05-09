@@ -18,13 +18,28 @@ public class TaskController {
         return taskService.getAllTasks();
     }
 
+    @GetMapping("/{id}")
+    public Task getTask(@PathVariable String projectId, @PathVariable String id) {
+        return taskService.getTaskById(id, projectId);
+
+    }
+
     @PostMapping
     public Task createTask(@RequestBody Task task) {
         return taskService.createTask(task);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteTask(@PathVariable String id) {
-        taskService.deleteTask(id);
+    public void deleteTask(@PathVariable String projectId, @PathVariable String id) {
+        taskService.deleteTask(id, projectId);
+    }
+
+    @PutMapping("/{id}")
+    public Task updateTask(
+            @PathVariable String projectId,
+            @PathVariable String id,
+            @RequestBody Task request
+    ) {
+        return taskService.updateTask(id, request, projectId);
     }
 }
