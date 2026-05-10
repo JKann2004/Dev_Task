@@ -16,12 +16,14 @@ public class ProjectController {
     private ProjectService projectService;
 
     @GetMapping
-    public List<Project> getAllProjects(@PathVariable String userId) {
+    public List<Project> getAllProjects(HttpServletRequest request) {
+        String userId = (String) request.getAttribute("userId");
         return projectService.getAllProjects(userId);
     }
 
     @GetMapping("/{id}")
-    public Project getProject(@PathVariable String userId, @PathVariable String id) {
+    public Project getProject(@PathVariable String id, HttpServletRequest request) {
+        String userId = (String) request.getAttribute("userId");
         return projectService.getProjectById(id, userId);
     }
 
@@ -32,16 +34,18 @@ public class ProjectController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProject(@PathVariable String userId, @PathVariable String id) {
+    public void deleteProject(@PathVariable String id, HttpServletRequest request) {
+        String userId = (String) request.getAttribute("userId");
         projectService.deleteProject(id, userId);
     }
 
     @PutMapping("/{id}")
     public Project updateProject(
-            @PathVariable String userId,
             @PathVariable String id,
-            @RequestBody Project request
+            @RequestBody Project requestBody,
+            HttpServletRequest request
     ) {
-        return projectService.updateProject(id, request, userId);
+        String userId = (String) request.getAttribute("userId");
+        return projectService.updateProject(id, requestBody, userId);
     }
 }

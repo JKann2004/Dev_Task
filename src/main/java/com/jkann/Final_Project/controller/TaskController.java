@@ -9,39 +9,50 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/task")
+@RequestMapping("/api/project/{projectId}/task")
 public class TaskController {
     @Autowired
     private TaskService taskService;
 
     @GetMapping
-    public List<Task> getAllTasks() {
-        return taskService.getAllTasks();
+    public List<Task> getAllTasks(@PathVariable String projectid,
+                                  HttpServletRequest request) {
+        String userId = (String) request.getAttribute("userId");
+        return taskService.getAllTasks(projectid, userId);
     }
 
     @GetMapping("/{id}")
-    public Task getTask(@PathVariable String projectId, @PathVariable String id) {
-        return taskService.getTaskById(id, projectId);
-
+    public Task getTask(@PathVariable String projectId,
+                        @PathVariable String id,
+                        HttpServletRequest request) {
+        String userId = (String) request.getAttribute("userId");
+        return taskService.getTaskById(id, projectId, userId);
     }
 
     @PostMapping
-    public Task createTask(@RequestBody Task task, HttpServletRequest request) {
+    public Task createTask(@PathVariable String projectId,
+                           @RequestBody Task task,
+                           HttpServletRequest request) {
         String userId = (String) request.getAttribute("userId");
-        return taskService.createTask(task, userId);
+        return taskService.createTask(task, projectId, userId);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteTask(@PathVariable String projectId, @PathVariable String id) {
-        taskService.deleteTask(id, projectId);
+    public void deleteTask(@PathVariable String projectId,
+                           @PathVariable String id,
+                           HttpServletRequest request) {
+        String userId = (String) request.getAttribute("userId");
+        taskService.deleteTask(id, projectId, userId);
     }
 
     @PutMapping("/{id}")
     public Task updateTask(
             @PathVariable String projectId,
             @PathVariable String id,
-            @RequestBody Task request
+            @RequestBody Task task,
+            HttpServletRequest request
     ) {
-        return taskService.updateTask(id, request, projectId);
+        String userId = (String) request.getAttribute("userId");
+        return taskService.updateTask(id, task, projectId, userId);
     }
 }

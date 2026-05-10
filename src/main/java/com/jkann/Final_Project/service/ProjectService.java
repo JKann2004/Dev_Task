@@ -47,10 +47,15 @@ public class ProjectService {
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Project not found"));
 
-        project.setTitle(request.getTitle());
-        project.setGenre(request.getGenre());
-        project.setDescription(request.getDescription());
-
+        if (request.getTitle() != null) {
+            project.setTitle(request.getTitle());
+        }
+        if (request.getGenre() != null) {
+            project.setGenre(request.getGenre());
+        }
+        if (request.getDescription() != null) {
+            project.setDescription(request.getDescription());
+        }
         return projectRepository.save(project);
     }
 
