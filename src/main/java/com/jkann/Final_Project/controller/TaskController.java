@@ -15,10 +15,10 @@ public class TaskController {
     private TaskService taskService;
 
     @GetMapping
-    public List<Task> getAllTasks(@PathVariable String projectid,
+    public List<Task> getAllTasks(@PathVariable String projectId,
                                   HttpServletRequest request) {
         String userId = (String) request.getAttribute("userId");
-        return taskService.getAllTasks(projectid, userId);
+        return taskService.getAllTasks(projectId, userId);
     }
 
     @GetMapping("/{id}")

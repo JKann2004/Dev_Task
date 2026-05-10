@@ -35,17 +35,16 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
-    public List<Task> getAllTasks(String projectid, String userid) {
-        Project project = projectRepository.findById(projectid)
+    public List<Task> getAllTasks(String projectId, String userid) {
+        Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Project not found"
                 ));
-
         if (!project.getUserId().equals(userid)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 
-        return taskRepository.findByProjectId(projectid);
+        return taskRepository.findByProjectId(projectId);
     }
 
     public void deleteTask(String id, String projectId, String userId) {
