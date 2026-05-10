@@ -1,6 +1,8 @@
 package com.jkann.Final_Project.service;
 
+import com.jkann.Final_Project.entity.Project;
 import com.jkann.Final_Project.entity.Task;
+import com.jkann.Final_Project.repository.ProjectRepository;
 import com.jkann.Final_Project.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,10 +16,24 @@ import java.util.List;
 public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
+    @Autowired
+    private ProjectRepository projectRepository;
 
-    public Task createTask(Task task) {
-        task.setCreatedAt(new Date());
-        return taskRepository.save(task);
+    public Task createTask(Task task, String userId) {
+        Project project = projectRepository.findById(task.getProjectId())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Project not found"
+                ));
+
+        if (!project.getUserId().equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        Task newTask = new Task();
+        newTask.setProjectId(task.getProjectId());
+        newTask.setCreatedAt(new Date());
+        return taskRepository.save(newTask);
     }
 
     public List<Task> getAllTasks() {

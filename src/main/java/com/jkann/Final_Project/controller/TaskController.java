@@ -2,6 +2,7 @@ package com.jkann.Final_Project.controller;
 
 import com.jkann.Final_Project.entity.Task;
 import com.jkann.Final_Project.service.TaskService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +26,9 @@ public class TaskController {
     }
 
     @PostMapping
-    public Task createTask(@RequestBody Task task) {
-        return taskService.createTask(task);
+    public Task createTask(@RequestBody Task task, HttpServletRequest request) {
+        String userId = (String) request.getAttribute("userId");
+        return taskService.createTask(task, userId);
     }
 
     @DeleteMapping("/{id}")

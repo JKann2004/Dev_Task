@@ -20,8 +20,9 @@ public class ProjectService {
     private TaskRepository taskRepository;
 
     // Create Project
-    public Project createProject(Project project) {
+    public Project createProject(Project project, String userId) {
         project.setCreatedAt(new Date());
+        project.setUserId(userId);
         return projectRepository.save(project);
     }
 

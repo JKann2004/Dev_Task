@@ -2,6 +2,7 @@ package com.jkann.Final_Project.controller;
 
 import com.jkann.Final_Project.entity.Project;
 import com.jkann.Final_Project.service.ProjectService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.hibernate.validator.internal.constraintvalidators.bv.time.pastorpresent.PastOrPresentValidatorForJapaneseDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +26,9 @@ public class ProjectController {
     }
 
     @PostMapping
-    public Project createProject(@RequestBody Project project) {
-        return projectService.createProject(project);
+    public Project createProject(@RequestBody Project project, HttpServletRequest request) {
+        String userId = (String) request.getAttribute("userId");
+        return projectService.createProject(project, userId);
     }
 
     @DeleteMapping("/{id}")

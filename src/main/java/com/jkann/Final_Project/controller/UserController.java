@@ -52,8 +52,11 @@ public class UserController {
                 )
         );
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getUsername());
-        String token = jwtUtil.generateToken(userDetails);
+        User user = userRepository
+                .findByUsername(loginRequest.getUsername())
+                .orElseThrow();
+
+        String token = jwtUtil.generateToken(user);
         return ResponseEntity.ok(Map.of("token", token));
     }
 }
