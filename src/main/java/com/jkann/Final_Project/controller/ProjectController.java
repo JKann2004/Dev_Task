@@ -16,8 +16,8 @@ public class ProjectController {
     private ProjectService projectService;
 
     @GetMapping
-    public List<Project> getAllProjects() {
-        return projectService.getAllProjects();
+    public List<Project> getAllProjects(@PathVariable String userId) {
+        return projectService.getAllProjects(userId);
     }
 
     @GetMapping("/{id}")

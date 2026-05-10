@@ -27,8 +27,8 @@ public class ProjectService {
     }
 
     // Get all projects
-    public List<Project> getAllProjects() {
-        return projectRepository.findAll();
+    public List<Project> getAllProjects(String userId) {
+        return projectRepository.findByUserId(userId);
     }
 
     // Delete project
@@ -55,11 +55,15 @@ public class ProjectService {
     }
 
     public Project getProjectById(String id, String userId) {
-        return projectRepository.findByIdAndUserId(id, userId)
+        Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
                         "Project not found"
                 ));
+        if (!project.getUserId().equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not your project");
+        }
+        return project;
     }
 
 }
