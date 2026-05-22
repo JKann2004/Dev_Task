@@ -1,6 +1,3 @@
-Jaylynna Kann
-885860361
-
 This project is a backend application that manages users, projects, and tasks using MongoDB as its database. Only authenticated users can manage their own projects and tasks. A user is able to have multiple projects, and a project is able to have multiple tasks.
 
 Registering a user
